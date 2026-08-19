@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2C1A0B">
+<link rel="icon" type="image/png" href="art/favicon-32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="art/favicon-16.png" sizes="16x16">
+<link rel="apple-touch-icon" href="art/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="art/favicon-192.png" sizes="192x192">
+<title>Повернуть PDF онлайн бесплатно – без загрузки файла | TurnPDF</title>
+<meta name="description" content="Поверните все или выбранные страницы PDF на 90° или 180° прямо в браузере. Бесплатно, без регистрации и загрузки на сервер – файл остаётся на вашем компьютере.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://pdf.urbantransmission.org/">
+<link rel="alternate" hreflang="ru" href="https://pdf.urbantransmission.org/">
+<link rel="alternate" hreflang="x-default" href="https://pdf.urbantransmission.org/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Повернуть PDF онлайн – бесплатно и приватно | TurnPDF">
+<meta property="og:description" content="Поверните страницы PDF прямо в браузере. Файл не покидает ваш компьютер.">
+<meta property="og:url" content="https://pdf.urbantransmission.org/">
+<meta property="og:image" content="https://pdf.urbantransmission.org/art/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="TurnPDF – Повернуть PDF онлайн бесплатно">
+<meta name="twitter:description" content="Поверните страницы PDF в браузере без загрузки на сервер. Бесплатно, без регистрации.">
+<meta name="twitter:image" content="https://pdf.urbantransmission.org/art/og-cover.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "TurnPDF",
+  "url": "https://pdf.urbantransmission.org/",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any (web browser)",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "RUB"},
+  "description": "Поворот всех или выбранных страниц PDF онлайн без загрузки файла на сервер",
+  "featureList": ["Обработка в браузере без загрузки на сервер", "Поворот выбранных страниц и диапазонов", "Поворот на 90° по часовой, 90° против часовой, 180°"],
+  "author": {"@type": "Person", "name": "Анна Агафонова", "url": "https://urbantransmission.org"}
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Загружается ли PDF на сервер?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Нет. Документ обрабатывается прямо в браузере и не покидает ваше устройство. Файл не отправляется ни на какой внешний сервер."}
+    },
+    {
+      "@type": "Question",
+      "name": "Можно ли повернуть только выбранные страницы PDF?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Да. Переключитесь в режим «Выбранные страницы» и укажите номера или диапазоны: например, 1-5, 8 или 2, 7-10, 14. Для каждого диапазона можно задать своё направление поворота."}
+    },
+    {
+      "@type": "Question",
+      "name": "Изменяется ли исходный файл?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Нет. TurnPDF скачивает результат как отдельный файл с суффиксом _rotated. Ваш оригинал остаётся нетронутым."}
+    },
+    {
+      "@type": "Question",
+      "name": "Есть ли ограничение на размер PDF?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Жёстких ограничений нет: файл обрабатывается в памяти браузера. На практике хорошо работают файлы до 100–200 МБ."}
+    },
+    {
+      "@type": "Question",
+      "name": "Нужна ли регистрация?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Нет. Сервис полностью бесплатный и не требует учётной записи."}
+    },
+    {
+      "@type": "Question",
+      "name": "Работает ли TurnPDF на смартфоне и планшете?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Да, в любом современном браузере на мобильном устройстве."}
+    }
+  ]
+}
+</script>
+
+<!-- Prevent flash of wrong language -->
+<script>
+(function(){
+  var s = localStorage.getItem('turnpdf-lang');
+  var l = s ? s : ((navigator.language || '').startsWith('en') ? 'en' : 'ru');
+  document.documentElement.classList.add('lang-' + l);
+  document.documentElement.lang = l;
+})();
+</script>
+
+<!-- pdf-lib (Cloudflare CDN – более стабильно в России чем unpkg) -->
+<!-- Если CDN недоступен: скачайте pdf-lib.min.js и укажите путь ./pdf-lib.min.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"></script>
+
+<style>
+/* ── Дизайн-токены Codebook ──────────────────────────────────────────── */
+:root{
+  --ink:#2b2620;--muted:#5f564a;--faint:#847a6b;
+  --accent:#A85D3E;--accent-deep:#7A4028;--accent-soft:rgba(168,93,62,.12);
+  --sage:#748268;--sage-deep:#4F5C47;--sage-soft:rgba(116,130,104,.15);
+  --line:rgba(140,95,70,.18);--line-light:rgba(140,95,70,.1);
+  --warn:#8a3a3a;--warn-bg:rgba(138,58,58,.06);--warn-border:rgba(138,58,58,.25);
+  --hero-bg:#2C1A0B;--gold-bright:#e3b969;
+  --radius:14px;--radius-lg:20px;
+  --serif:Cambria,Georgia,'Times New Roman',serif;
+  --mono:ui-monospace,SFMono-Regular,Consolas,'Liberation Mono',Menlo,monospace;
+  --shadow:0 10px 36px rgba(130,70,45,.12);
+  --glass-blur:23px;--glass-alpha:.5;
+  --glass-bg:rgba(255,252,246,var(--glass-alpha));
+  --glass-border:rgba(255,255,255,.7);
+}
+
+/* ── Сброс и базовые ──────────────────────────────────────────────────── */
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+html.lang-en .ru{display:none}
+html.lang-ru .en{display:none}
+
+body{
+  font-family:var(--serif);color:var(--ink);line-height:1.65;
+  background:#f7f2e7;
+  background-image:
+    radial-gradient(ellipse 900px 700px at 10% -5%, rgba(255,247,232,.9), transparent 60%),
+    radial-gradient(ellipse 800px 800px at 100% 30%, rgba(255,250,240,.7), transparent 55%),
+    radial-gradient(ellipse 900px 900px at 30% 110%, rgba(250,238,222,.55), transparent 60%);
+  background-attachment:fixed;
+}
+/* Desktop background engraving – hidden on mobile for performance */
+@media(min-width:769px){
+  body{
+    background-image:
+      radial-gradient(ellipse 900px 700px at 10% -5%, rgba(255,247,232,.52), transparent 60%),
+      radial-gradient(ellipse 800px 800px at 100% 30%, rgba(255,250,240,.42), transparent 55%),
+      radial-gradient(ellipse 900px 900px at 30% 110%, rgba(250,238,222,.35), transparent 60%),
+      url('art/background.png');
+    background-size:auto,auto,auto,cover;
+    background-position:0 0,0 0,0 0,center;
+    background-attachment:fixed;
+  }
+}
+
+a{color:var(--accent-deep);text-underline-offset:3px}
+a:hover{color:var(--accent)}
+img{max-width:100%;display:block}
+::selection{background:rgba(156,122,60,.22)}
+
+/* ── Доступность ──────────────────────────────────────────────────────── */
+.skip-link{
+  position:absolute;top:-100px;left:16px;z-index:9999;
+  padding:10px 18px;border-radius:8px;
+  background:var(--accent);color:#fbf8f2;
+  font-weight:700;font-size:13px;text-decoration:none;
+  transition:top .15s
+}
+.skip-link:focus{top:8px}
+a:focus-visible,button:focus-visible,[tabindex="0"]:focus-visible{
+  outline:2px solid var(--accent);outline-offset:2px;border-radius:4px
+}
+
+/* ── Боковые гравюры (заменить src на арты) ──────────────────────────── */
+#engrave-left,#engrave-right{
+  position:fixed;top:clamp(90px,15vw,180px);
+  height:calc(100vh - clamp(90px,15vw,180px));
+  width:400px;max-width:28vw;
+  pointer-events:none;z-index:0;overflow:hidden;
+  display:flex;align-items:center
+}
+#engrave-left{left:0}
+#engrave-right{right:0;justify-content:flex-end}
+#engrave-left img,#engrave-right img{
+  height:100%;max-height:1400px;width:auto;object-fit:contain;opacity:.55
+}
+#engrave-left img{
+  object-position:left center;
+  -webkit-mask-image:linear-gradient(to right,black 40%,transparent 90%);
+  mask-image:linear-gradient(to right,black 40%,transparent 90%)
+}
+#engrave-right img{
+  object-position:right center;
+  -webkit-mask-image:linear-gradient(to left,black 40%,transparent 90%);
+  mask-image:linear-gradient(to left,black 40%,transparent 90%)
+}
+@media(max-width:900px){#engrave-left,#engrave-right{display:none}}
+
+/* ── Hero band ────────────────────────────────────────────────────────── */
+.hero-band{
+  position:relative;width:100%;
+  height:clamp(90px,15vw,180px);
+  background:var(--hero-bg);
+  overflow:hidden;
+  box-shadow:0 6px 30px rgba(30,15,5,.22)
+}
+.hero-band img.hero-art{
+  display:block;
+  width:100%;
+  height:120%;
+  object-fit:contain;     /* изображение целиком, без обрезки */
+  object-position:center;
+}
+.hero-fallback{
+  position:relative;z-index:1;
+  display:flex;align-items:center;gap:16px;
+  pointer-events:none
+}
+.hero-fallback .hf-icon{
+  font-size:clamp(1.8rem,3.5vw,2.8rem);
+  line-height:1;filter:drop-shadow(0 2px 8px rgba(0,0,0,.3))
+}
+.hero-fallback .hf-name{
+  font-family:var(--serif);font-weight:400;letter-spacing:.08em;
+  font-size:clamp(.9rem,2.5vw,1.5rem);
+  color:var(--gold-bright);
+  text-shadow:0 2px 10px rgba(0,0,0,.3)
+}
+
+/* Переключатель языка */
+.lang-switch{
+  position:absolute;right:14px;top:14px;transform:none;
+  display:flex;gap:2px;
+  background:rgba(0,0,0,.2);border-radius:999px;padding:3px
+}
+.lang-switch button{
+  background:transparent;border:none;cursor:pointer;
+  font:700 12px/1 var(--mono);letter-spacing:.05em;
+  color:rgba(227,185,105,.45);
+  padding:8px 12px;min-width:44px;min-height:36px;
+  border-radius:999px;transition:color .15s,background .15s
+}
+.lang-switch button.on{color:var(--gold-bright);background:rgba(227,185,105,.14)}
+.lang-switch button:hover{color:var(--gold-bright)}
+@media(max-width:480px){
+  .lang-switch{right:8px}
+  .lang-switch button{padding:7px 8px;font-size:11px;min-width:36px}
+}
+
+/* ── Основная обёртка ─────────────────────────────────────────────────── */
+.wrap{
+  max-width:960px;margin:0 auto;
+  padding:40px 24px 52px;
+  position:relative;z-index:1
+}
+/* Светлая панель за текстом – только на десктопе, где видна подложка.
+   Свечение только по бокам (::before/::after), не касается hero и footer. */
+@media(min-width:769px){
+  .wrap{
+    background:rgba(247,242,231,0.88);
+  }
+  .wrap::before,
+  .wrap::after{
+    content:'';
+    position:absolute;
+    top:0;bottom:0;
+    width:38px;
+    pointer-events:none;
+  }
+  .wrap::before{
+    right:100%;
+    background:linear-gradient(to left,rgba(247,242,231,.6),transparent);
+  }
+  .wrap::after{
+    left:100%;
+    background:linear-gradient(to right,rgba(247,242,231,.6),transparent);
+  }
+}
+
+/* ── Шапка ────────────────────────────────────────────────────────────── */
+.page-header{margin-bottom:10px}
+.page-header h1{
+  font-weight:700;font-size:clamp(34px,3.8vw,44px);
+  line-height:1.28;letter-spacing:-.01em;
+  margin-bottom:16px
+}
+.page-header .sub{
+  color:var(--muted);font-size:19px;line-height:1.65;max-width:760px
+}
+
+/* ── Шаги ─────────────────────────────────────────────────────────────── */
+.steps-list{
+  list-style:none;counter-reset:cbstep;
+  display:flex;flex-direction:column;gap:10px;
+  margin-top:28px
+}
+.steps-list li{
+  counter-increment:cbstep;
+  position:relative;padding-left:40px;
+  font-size:17.5px;line-height:1.6;color:var(--ink)
+}
+.steps-list li::before{
+  content:counter(cbstep);
+  position:absolute;left:0;top:0;
+  width:27px;height:27px;border-radius:50%;
+  background:var(--sage-soft);color:var(--sage-deep);
+  font-weight:700;font-size:13px;line-height:27px;text-align:center
+}
+
+/* ── Стеклянная карточка-инструмент ──────────────────────────────────── */
+.tool-zone{
+  margin-top:32px;
+  background:var(--glass-bg);
+  backdrop-filter:blur(var(--glass-blur)) saturate(165%);
+  -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(165%);
+  border:1.5px solid var(--glass-border);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow);
+  padding:32px 30px
+}
+@media(max-width:540px){.tool-zone{padding:22px 16px}}
+
+/* ── Зона загрузки (drop zone) ───────────────────────────────────────── */
+.drop-zone{
+  border:1.5px dashed rgba(168,93,62,.45);
+  border-radius:var(--radius);
+  padding:44px 20px;
+  text-align:center;
+  cursor:pointer;
+  background:rgba(255,255,255,.38);
+  transition:border-color .15s,background .15s
+}
+.drop-zone:hover,.drop-zone.drag-over{
+  border-color:var(--accent);background:var(--accent-soft)
+}
+.drop-zone .dz-icon{font-size:2.4rem;margin-bottom:12px}
+.drop-zone strong{
+  display:block;color:var(--accent-deep);font-size:16px;margin-bottom:6px
+}
+.drop-zone small{display:block;color:var(--muted);font-size:13px}
+
+/* ── Информация о выбранном файле ─────────────────────────────────────── */
+.file-info{
+  display:flex;align-items:center;gap:10px;
+  margin-top:16px;padding:12px 16px;
+  background:var(--accent-soft);
+  border:1px solid rgba(168,93,62,.22);
+  border-radius:12px
+}
+.file-info .fi-icon{font-size:1.4rem;flex-shrink:0}
+.file-info .fi-name{
+  flex:1;font-weight:600;color:var(--accent-deep);
+  font-size:15px;word-break:break-all;overflow:hidden
+}
+.file-info .fi-size{color:var(--muted);font-size:13px;white-space:nowrap;flex-shrink:0}
+.fi-clear{
+  background:none;border:none;cursor:pointer;
+  color:var(--faint);font-size:18px;
+  padding:4px 8px;border-radius:6px;
+  min-height:44px;min-width:44px;
+  display:flex;align-items:center;justify-content:center;
+  transition:color .12s;flex-shrink:0
+}
+.fi-clear:hover{color:var(--accent)}
+
+/* ── Раздел с вариантами поворота ─────────────────────────────────────── */
+.rot-section{margin-top:26px}
+.section-label{
+  font-weight:700;font-size:15px;color:var(--ink);margin-bottom:12px
+}
+.modes{display:flex;gap:10px;flex-wrap:wrap}
+.mode{
+  flex:1;min-width:180px;
+  border:1.5px solid var(--line);border-radius:12px;
+  padding:14px 16px;cursor:pointer;
+  background:rgba(255,255,255,.45);
+  transition:border-color .15s,background .15s,transform .15s;
+  min-height:52px;
+  display:flex;flex-direction:column;gap:5px
+}
+.mode:hover{transform:translateY(-2px);border-color:rgba(168,93,62,.35)}
+.mode input[type=radio]{display:none}
+.mode.active{border-color:var(--accent);background:var(--accent-soft)}
+.mode-title{font-size:18px;font-weight:700;color:var(--ink)}
+.mode small{color:var(--muted);font-size:13px;line-height:1.4}
+@media(max-width:540px){.modes{flex-direction:column}.mode{min-width:unset}}
+
+/* ── Кнопка действия ──────────────────────────────────────────────────── */
+.action-area{margin-top:28px;display:flex;flex-direction:column;gap:14px}
+.btn-rotate{
+  display:inline-flex;align-items:center;gap:10px;
+  border:none;cursor:pointer;font-family:var(--serif);
+  background:var(--accent-deep);color:#fbf8f2;
+  border-radius:999px;padding:14px 34px;
+  font-weight:700;font-size:17px;
+  min-height:52px;
+  transition:transform .15s,filter .15s
+}
+.btn-rotate:hover{transform:translateY(-2px);filter:brightness(1.12)}
+.btn-rotate:disabled{opacity:.5;pointer-events:none;cursor:default}
+.btn-rotate .btn-icon{font-size:1.1em}
+
+/* ── Статус-сообщения ─────────────────────────────────────────────────── */
+.status{padding:14px 16px;border-radius:12px;font-size:15px;line-height:1.55}
+.status.working{background:var(--sage-soft);color:var(--sage-deep);border:1px solid rgba(116,130,104,.3)}
+.status.done   {background:rgba(80,130,80,.08);color:#3d6b3d;border:1px solid rgba(80,130,80,.3)}
+.status.error  {background:var(--warn-bg);color:var(--warn);border:1px solid var(--warn-border)}
+.status a{color:inherit;font-weight:700}
+
+/* ── Справочная таблица: как выбрать поворот ─────────────────────────── */
+.guide{margin-top:42px}
+.guide h2{font-family:var(--serif);font-weight:700;font-size:22px;margin-bottom:14px}
+.guide-table{width:100%;border-collapse:collapse;font-size:15px}
+.guide-table th{
+  text-align:left;padding:9px 14px;
+  color:var(--muted);font-weight:600;
+  border-bottom:2px solid var(--line)
+}
+.guide-table td{
+  padding:11px 14px;border-bottom:1px solid var(--line-light);
+  vertical-align:middle
+}
+.guide-table tr:last-child td{border-bottom:none}
+.rot-badge{font-size:16px;font-weight:700;white-space:nowrap}
+.guide p.tip{margin-top:12px;font-size:13.5px;color:var(--muted)}
+
+/* ── Плашка-тизер: другие инструменты ───────────────────────────────── */
+.teaser{
+  margin-top:44px;
+  background:linear-gradient(135deg,rgba(43,38,32,.93),rgba(58,46,32,.93));
+  border-radius:var(--radius-lg);
+  padding:26px 28px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:20px;flex-wrap:wrap;
+  box-shadow:0 12px 34px rgba(60,45,20,.2)
+}
+.teaser-text .eyebrow{
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:#e0a380;font-weight:600;margin-bottom:8px
+}
+.teaser-text .tt{font-weight:700;font-size:18px;color:#f7f2e7;margin-bottom:4px}
+.teaser-text .ts{font-size:13.5px;color:#b7ac98}
+.teaser a.btn-teaser{
+  flex-shrink:0;background:#f7f2e7;color:#2b2620;
+  border-radius:999px;padding:12px 24px;
+  font-weight:700;font-size:14px;text-decoration:none;
+  white-space:nowrap;transition:transform .15s;
+  min-height:44px;display:inline-flex;align-items:center
+}
+.teaser a.btn-teaser:hover{transform:translateY(-2px)}
+@media(max-width:520px){.teaser{flex-direction:column}.teaser a.btn-teaser{align-self:flex-start}}
+/* ── Multi-link teaser variant ────────────────────────────────────────── */
+.teaser-links{flex-direction:column;gap:14px;align-items:stretch}
+.teaser-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;width:100%}
+.tlink{
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);
+  border-radius:10px;padding:14px 16px;text-decoration:none;
+  display:flex;flex-direction:column;gap:5px;
+  transition:background .15s,transform .15s
+}
+.tlink:hover{background:rgba(255,255,255,.16);transform:translateY(-2px)}
+.tlink-title{font-size:14px;font-weight:700;color:#f7f2e7;line-height:1.3}
+.tlink-sub{font-size:12.5px;color:#b7ac98;line-height:1.35}
+.tlink-url{font-size:11.5px;color:#e0a380;font-family:var(--mono);margin-top:2px}
+
+/* ── Переключатель «все / выбранные страницы» ────────────────────────── */
+.scope-toggle{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.scope-opt{
+  flex:1;min-width:150px;
+  border:1.5px solid var(--line);border-radius:12px;
+  padding:11px 16px;cursor:pointer;
+  background:rgba(255,255,255,.45);
+  font-size:15px;
+  transition:border-color .15s,background .15s
+}
+.scope-opt input[type=radio]{display:none}
+.scope-opt.active{border-color:var(--accent);background:var(--accent-soft)}
+.scope-opt:hover{border-color:rgba(168,93,62,.35)}
+
+/* ── Поля диапазонов страниц ─────────────────────────────────────────── */
+.range-rows{display:flex;flex-direction:column;gap:12px}
+.range-row{display:flex;align-items:flex-start;gap:14px}
+.range-icon{
+  width:54px;flex-shrink:0;padding-top:28px;
+  font-size:17px;font-weight:700;color:var(--ink);text-align:center
+}
+.range-field{flex:1}
+.range-label{
+  display:block;font-size:13px;font-weight:600;
+  color:var(--muted);margin-bottom:5px
+}
+.range-input{
+  width:100%;padding:10px 14px;
+  border:1.5px solid var(--line);border-radius:10px;
+  background:rgba(255,255,255,.6);
+  font-family:var(--mono);font-size:14px;color:var(--ink);
+  transition:border-color .15s
+}
+.range-input:focus{outline:none;border-color:var(--accent)}
+.range-input::placeholder{color:var(--faint)}
+.range-hint{
+  margin-top:14px;padding:12px 14px;
+  background:var(--sage-soft);border-radius:10px;
+  font-size:13px;color:var(--muted);line-height:1.55
+}
+.range-hint code{
+  font-family:var(--mono);
+  background:rgba(0,0,0,.07);padding:1px 5px;border-radius:4px
+}
+@media(max-width:480px){.range-icon{width:40px;padding-top:26px;font-size:15px}}
+
+/* ── Утилиты ──────────────────────────────────────────────────────────── */
+.hidden{display:none!important}
+
+/* ── Примечание об оригинале + кнопка «ещё один файл» ───────────────── */
+.unchanged-note{font-size:13px;color:var(--muted);margin-bottom:12px}
+.btn-another{
+  background:none;border:1.5px solid var(--line);
+  color:var(--muted);border-radius:999px;
+  padding:11px 24px;font-family:var(--serif);font-size:15px;
+  cursor:pointer;margin-top:10px;
+  transition:border-color .15s,color .15s;min-height:44px
+}
+.btn-another:hover{border-color:var(--accent);color:var(--accent-deep)}
+
+/* ── Trust-сигнал под зоной загрузки ─────────────────────────────────── */
+.trust-note{
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  margin-top:10px;font-size:13px;color:var(--muted);
+}
+.trust-note .lock{font-size:14px}
+
+/* ── FAQ ──────────────────────────────────────────────────────────────── */
+.faq{margin-top:42px}
+.faq h2{font-family:var(--serif);font-weight:700;font-size:23px;margin-bottom:2px}
+.faq-list{margin-top:14px}
+.faq-item{border-bottom:1px solid var(--line-light)}
+.faq-item:first-child{border-top:1px solid var(--line-light)}
+details.faq-item summary{
+  cursor:pointer;padding:14px 0;
+  font-weight:700;font-size:17px;color:var(--ink);
+  list-style:none;
+  display:flex;justify-content:space-between;align-items:center;gap:12px
+}
+details.faq-item summary::-webkit-details-marker{display:none}
+details.faq-item summary::after{content:'＋';color:var(--muted);font-size:16px;flex-shrink:0}
+details.faq-item[open] summary::after{content:'－'}
+details.faq-item .faq-ans{
+  padding:0 0 16px;color:var(--muted);
+  font-size:17px;line-height:1.65;margin:0
+}
+details.faq-item .faq-ans code{
+  font-family:var(--mono);background:rgba(0,0,0,.07);
+  padding:1px 5px;border-radius:4px
+}
+
+/* ── SEO-текстовые блоки ─────────────────────────────────────────────── */
+.seo-blocks{margin-top:42px;display:grid;gap:20px}
+@media(min-width:600px){.seo-blocks{grid-template-columns:1fr 1fr}}
+.seo-block{
+  background:rgba(255,255,255,.42);
+  border:1px solid var(--line-light);border-radius:var(--radius);
+  padding:18px 20px
+}
+.seo-block h2{
+  font-family:var(--serif);font-weight:700;font-size:18px;
+  margin-bottom:8px;color:var(--ink)
+}
+.seo-block p{font-size:15.5px;color:var(--muted);line-height:1.6;margin:0}
+.seo-block code{font-family:var(--mono);background:rgba(0,0,0,.07);padding:1px 5px;border-radius:4px}
+
+/* ── Подвал ───────────────────────────────────────────────────────────── */
+.site-footer{
+  background:var(--hero-bg);
+  margin-top:0;padding:34px 22px;
+  box-shadow:0 -4px 24px rgba(20,10,0,.14)
+}
+.footer-inner{
+  max-width:960px;margin:0 auto;
+  display:flex;gap:20px;
+  justify-content:space-between;align-items:flex-end;flex-wrap:wrap
+}
+.footer-left p{margin:0 0 6px;font-size:13.5px;color:rgba(227,185,105,.55)}
+.footer-left a{color:var(--gold-bright);text-decoration:none;font-weight:600}
+.footer-left a:hover{text-decoration:underline}
+.footer-right{display:flex;gap:18px;flex-wrap:wrap;align-items:flex-end}
+.footer-right a{
+  color:var(--gold-bright);text-decoration:none;
+  font-size:13.5px;font-weight:600;
+  min-height:44px;display:inline-flex;align-items:center
+}
+.footer-right a:hover{text-decoration:underline}
+@media(max-width:480px){
+  .footer-inner{flex-direction:column;align-items:flex-start;gap:14px}
+}
+</style>
+</head>
+<body>
+
+<a href="#tool-zone" class="skip-link">
+  <span class="ru">Перейти к инструменту</span>
+  <span class="en">Skip to tool</span>
+</a>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     БОКОВЫЕ ГРАВЮРЫ
+     Замените src="" на сгенерированные арты (art/left.png, art/right.png)
+     ═══════════════════════════════════════════════════════════════════ -->
+<div id="engrave-left" aria-hidden="true">
+  <img src="art/left.png" alt="">
+</div>
+<div id="engrave-right" aria-hidden="true">
+  <img src="art/right.png" alt="">
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     HERO BAND
+     Вариант А (сейчас): текстовая заглушка
+     Вариант Б (после генерации арта): удалите .hero-fallback и раскомментируйте <img>
+       <img class="hero-art" src="art/hero.png" alt="TurnPDF">
+     ═══════════════════════════════════════════════════════════════════ -->
+<div class="hero-band">
+  <img class="hero-art" src="art/hero.png" alt="TurnPDF">
+    <div class="lang-switch">
+    <button type="button" data-lang="ru" onclick="setLang('ru')">РУ</button>
+    <button type="button" data-lang="en" onclick="setLang('en')">EN</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     ОСНОВНОЙ КОНТЕНТ
+     ═══════════════════════════════════════════════════════════════════ -->
+<main>
+<div class="wrap">
+
+  <!-- Заголовок страницы -->
+  <header class="page-header">
+    <h1>
+      <span class="ru">Повернуть страницы PDF</span>
+      <span class="en">Rotate PDF pages</span>
+    </h1>
+    <p class="sub">
+      <span class="ru">Бесплатно, прямо в браузере – файл никуда не загружается и не покидает ваш компьютер. Незаменимо при работе с отсканированными книгами и архивными документами.</span>
+      <span class="en">Free, entirely in your browser – your file is never uploaded to a server or shared with anyone. Essential when working with scanned books and archival documents.</span>
+    </p>
+  </header>
+
+  <!-- Шаги-инструкция -->
+  <ol class="steps-list" aria-label="Как использовать">
+    <li>
+      <span class="ru">Выберите PDF или перетащите файл в область загрузки ниже</span>
+      <span class="en">Select a PDF or drag it into the upload area below</span>
+    </li>
+    <li>
+      <span class="ru">Укажите направление поворота</span>
+      <span class="en">Choose the rotation direction</span>
+    </li>
+    <li>
+      <span class="ru">Нажмите <strong>Повернуть & Скачать</strong> – готово</span>
+      <span class="en">Click <strong>Rotate & Download</strong> – done</span>
+    </li>
+  </ol>
+
+  <!-- ── Инструмент ── -->
+  <div class="tool-zone" id="tool-zone">
+
+    <!-- Шаг 1: загрузка файла -->
+    <div class="drop-zone" id="drop-zone"
+         role="button" tabindex="0"
+         aria-label="Загрузить PDF / Upload PDF">
+      <input type="file" id="file-input" accept=".pdf" hidden>
+      <div class="dz-icon">📄</div>
+      <strong class="ru">Перетащите PDF сюда</strong>
+      <strong class="en">Drop PDF here</strong>
+      <small class="ru">или нажмите для выбора файла · принимается любой PDF</small>
+      <small class="en">or click to browse · any PDF accepted</small>
+    </div>
+
+    <!-- Trust-сигнал -->
+    <p class="trust-note">
+      <span class="lock">🔒</span>
+      <span class="ru">Файл не загружается на сервер – обработка только в вашем браузере</span>
+      <span class="en">File never uploaded – processing happens in your browser only</span>
+    </p>
+
+    <!-- Информация о выбранном файле -->
+    <div class="file-info hidden" id="file-info">
+      <span class="fi-icon">📄</span>
+      <span class="fi-name" id="file-name-label"></span>
+      <span class="fi-size" id="file-size-label"></span>
+      <button type="button" class="fi-clear" id="clear-btn"
+              title="Убрать файл / Remove file">✕</button>
+    </div>
+
+    <!-- Шаг 2: выбор диапазона и направления -->
+    <div class="rot-section hidden" id="rot-section">
+
+      <!-- Переключатель: все страницы / выбранные -->
+      <p class="section-label ru">Страницы для поворота:</p>
+      <p class="section-label en">Pages to rotate:</p>
+      <div class="scope-toggle">
+        <label class="scope-opt active" id="scope-all">
+          <input type="radio" name="scope" value="all" checked>
+          <span class="ru">Все страницы</span>
+          <span class="en">All pages</span>
+        </label>
+        <label class="scope-opt" id="scope-custom">
+          <input type="radio" name="scope" value="custom">
+          <span class="ru">Выбранные страницы</span>
+          <span class="en">Selected pages</span>
+        </label>
+      </div>
+
+      <!-- Режим: все страницы – одно направление -->
+      <div id="all-pages-rot">
+        <p class="section-label ru">Направление поворота:</p>
+        <p class="section-label en">Rotation direction:</p>
+        <div class="modes" role="radiogroup">
+          <label class="mode active" id="m-cw">
+            <input type="radio" name="rot" value="90" checked>
+            <span class="mode-title">↻ 90°</span>
+            <small class="ru">по часовой – текст читается наклонив голову вправо (←)</small>
+            <small class="en">clockwise – text readable by tilting head right (←)</small>
+          </label>
+          <label class="mode" id="m-ccw">
+            <input type="radio" name="rot" value="270">
+            <span class="mode-title">↺ 90°</span>
+            <small class="ru">против часовой – текст читается наклонив голову влево (→)</small>
+            <small class="en">counter-clockwise – text readable by tilting head left (→)</small>
+          </label>
+          <label class="mode" id="m-180">
+            <input type="radio" name="rot" value="180">
+            <span class="mode-title">↕ 180°</span>
+            <small class="ru">перевернуть вверх ногами</small>
+            <small class="en">flip upside down</small>
+          </label>
+        </div>
+      </div>
+
+      <!-- Режим: выбранные страницы – разные направления -->
+      <div id="custom-pages-rot" class="hidden">
+        <div class="range-rows">
+          <div class="range-row">
+            <div class="range-icon">↻ 90°</div>
+            <div class="range-field">
+              <label class="range-label" for="range-90">
+                <span class="ru">по часовой</span>
+                <span class="en">clockwise</span>
+              </label>
+              <input class="range-input" id="range-90" type="text"
+                     placeholder="напр. 1-5, 8   /   e.g. 1-5, 8">
+            </div>
+          </div>
+          <div class="range-row">
+            <div class="range-icon">↺ 90°</div>
+            <div class="range-field">
+              <label class="range-label" for="range-270">
+                <span class="ru">против часовой</span>
+                <span class="en">counter-clockwise</span>
+              </label>
+              <input class="range-input" id="range-270" type="text"
+                     placeholder="напр. 6-7   /   e.g. 6-7">
+            </div>
+          </div>
+          <div class="range-row">
+            <div class="range-icon">↕ 180°</div>
+            <div class="range-field">
+              <label class="range-label" for="range-180">
+                <span class="ru">перевернуть</span>
+                <span class="en">flip</span>
+              </label>
+              <input class="range-input" id="range-180" type="text"
+                     placeholder="напр. 11   /   e.g. 11">
+            </div>
+          </div>
+        </div>
+        <p class="range-hint">
+          <span class="ru">Страницы нумеруются с 1. Форматы: <code>1-5</code> (диапазон), <code>8</code> (одна страница), несколько через запятую. Незаполненные поля игнорируются – эти страницы не трогаются. Одна страница не может попасть в два поля одновременно.</span>
+          <span class="en">Pages start at 1. Formats: <code>1-5</code> (range), <code>8</code> (single page), comma-separated. Empty fields are ignored – those pages stay unchanged. A page cannot appear in two fields at once.</span>
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Шаг 3: кнопка + статус -->
+    <div class="action-area hidden" id="action-area">
+      <p class="unchanged-note">
+        <span class="ru">Результат сохраняется как новый файл – оригинал не изменяется</span>
+        <span class="en">The result is saved as a new file – your original stays unchanged</span>
+      </p>
+      <button type="button" class="btn-rotate" id="rotate-btn">
+        <span class="ru">Повернуть &amp; Скачать</span>
+        <span class="en">Rotate &amp; Download</span>
+      </button>
+      <div id="status-box"></div>
+      <button type="button" class="btn-another hidden" id="another-btn">
+        <span class="ru">← Обработать ещё один файл</span>
+        <span class="en">← Process another file</span>
+      </button>
+    </div>
+
+  </div><!-- /tool-zone -->
+
+  <!-- ── Справочная таблица ── -->
+  <div class="guide">
+    <h2 class="ru">Как выбрать направление поворота</h2>
+    <h2 class="en">How to choose the rotation direction</h2>
+    <table class="guide-table">
+      <thead>
+        <tr>
+          <th>
+            <span class="ru">Страницы выглядят так…</span>
+            <span class="en">Your PDF pages look like…</span>
+          </th>
+          <th>
+            <span class="ru">Выберите</span>
+            <span class="en">Choose</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <span class="ru">Текст лежит на боку: чтобы прочитать, нужно наклонить голову вправо. Так бывает, когда фотографировали книгу не поворачивая страницы.</span>
+            <span class="en">Text is sideways: you'd tilt your head right to read it. Happens when photographing a book without turning the pages.</span>
+          </td>
+          <td><span class="rot-badge">↻ 90°</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="ru">Текст лежит на боку: чтобы прочитать, нужно наклонить голову влево.</span>
+            <span class="en">Text is sideways: you'd tilt your head left to read it.</span>
+          </td>
+          <td><span class="rot-badge">↺ 90°</span></td>
+        </tr>
+        <tr>
+          <td>
+            <span class="ru">Страницы перевёрнуты вверх ногами – текст стоит «на голове».</span>
+            <span class="en">Pages are upside down – text appears inverted.</span>
+          </td>
+          <td><span class="rot-badge">↕ 180°</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="tip">
+      <span class="ru">💡 Если не уверены – попробуйте ↻ 90°. Результат не тот? Откройте повёрнутый PDF и обработайте ещё раз с другим направлением.</span>
+      <span class="en">💡 Not sure? Try ↻ 90° first. Wrong result? Just open the rotated PDF and process it again with a different direction.</span>
+    </p>
+  </div>
+
+  <!-- ── FAQ ── -->
+  <div class="faq">
+    <h2 class="ru">Часто задаваемые вопросы</h2>
+    <h2 class="en">Frequently asked questions</h2>
+    <div class="faq-list">
+
+      <details class="faq-item">
+        <summary>
+          <span class="ru">Загружается ли PDF на сервер?</span>
+          <span class="en">Does my PDF get uploaded to a server?</span>
+        </summary>
+        <p class="faq-ans">
+          <span class="ru">Нет. Документ обрабатывается прямо в браузере с помощью библиотеки pdf-lib и не покидает ваше устройство. Никакой передачи файла по сети не происходит.</span>
+          <span class="en">No. The file is processed locally using the pdf-lib library and never leaves your device. No network transfer takes place.</span>
+        </p>
+      </details>
+
+      <details class="faq-item">
+        <summary>
+          <span class="ru">Можно ли повернуть только часть страниц?</span>
+          <span class="en">Can I rotate only selected pages?</span>
+        </summary>
+        <p class="faq-ans">
+          <span class="ru">Да. Выберите режим «Выбранные страницы» и укажите номера или диапазоны: например, <code>1-5, 8</code> или <code>2, 7-10, 14</code>. Для разных диапазонов можно задать разные направления поворота.</span>
+          <span class="en">Yes. Switch to "Selected pages" mode and enter page numbers or ranges: e.g. <code>1-5, 8</code> or <code>2, 7-10, 14</code>. Different ranges can have different rotation directions.</span>
+        </p>
+      </details>
+
+      <details class="faq-item">
+        <summary>
+          <span class="ru">Изменяется ли исходный файл?</span>
+          <span class="en">Will my original file be modified?</span>
+        </summary>
+        <p class="faq-ans">
+          <span class="ru">Нет. TurnPDF скачивает результат как отдельный новый файл с суффиксом <code>_rotated</code>. Оригинал остаётся нетронутым.</span>
+          <span class="en">No. TurnPDF downloads the result as a separate new file with a <code>_rotated</code> suffix. Your original is untouched.</span>
+        </p>
+      </details>
+
+      <details class="faq-item">
+        <summary>
+          <span class="ru">Есть ли ограничение на размер PDF?</span>
+          <span class="en">Is there a file size limit?</span>
+        </summary>
+        <p class="faq-ans">
+          <span class="ru">Жёстких ограничений нет – файл обрабатывается в памяти браузера. На практике хорошо работают файлы до 100–200 МБ; очень большие сканы могут требовать чуть больше времени.</span>
+          <span class="en">No hard limit – the file is processed in browser memory. Files up to 100–200 MB work well in practice; very large scans may take a little longer.</span>
+        </p>
+      </details>
+
+      <details class="faq-item">
+        <summary>
+          <span class="ru">Нужна ли регистрация или оплата?</span>
+          <span class="en">Do I need to register or pay?</span>
+        </summary>
+        <p class="faq-ans">
+          <span class="ru">Нет. Сервис полностью бесплатный и не требует учётной записи.</span>
+          <span class="en">No. The service is completely free and requires no account.</span>
+        </p>
+      </details>
+
+      <details class="faq-item">
+        <summary>
+          <span class="ru">Работает ли TurnPDF на смартфоне?</span>
+          <span class="en">Does TurnPDF work on mobile?</span>
+        </summary>
+        <p class="faq-ans">
+          <span class="ru">Да, в любом современном браузере на смартфоне или планшете.</span>
+          <span class="en">Yes, in any modern browser on a smartphone or tablet.</span>
+        </p>
+      </details>
+
+    </div>
+  </div>
+
+  <!-- ── SEO-блоки ── -->
+  <div class="seo-blocks">
+    <div class="seo-block">
+      <h2 class="ru">Повернуть PDF без загрузки на сервер</h2>
+      <h2 class="en">Rotate PDF without uploading</h2>
+      <p class="ru">TurnPDF обрабатывает документ локально в браузере. Файл не отправляется на внешний сервер и не сохраняется третьими лицами – особенно важно при работе с архивными материалами и исследовательскими данными.</p>
+      <p class="en">TurnPDF processes your document locally in the browser. The file is never sent to an external server or stored by any third party – especially important when working with archival materials and research data.</p>
+    </div>
+    <div class="seo-block">
+      <h2 class="ru">Для сканов, книг и архивных документов</h2>
+      <h2 class="en">For scanned books and archival documents</h2>
+      <p class="ru">Инструмент особенно удобен для сканов книг, документов и архивных материалов. Поворачивайте весь файл или выбранные страницы – например, <code>1–50</code> или <code>3, 7–12</code>. Документ обрабатывается локально в браузере и не покидает ваше устройство.</p>
+      <p class="en">Especially useful for scanned books, documents and archival materials. Rotate the entire file or selected pages – e.g. <code>1–50</code> or <code>3, 7–12</code>. Processing happens locally in your browser; the file never leaves your device.</p>
+    </div>
+  </div>
+
+  <!-- ── Тизер: другие проекты автора ── -->
+  <div class="teaser teaser-links">
+    <div class="teaser-text">
+      <div class="eyebrow">
+        <span class="ru">другие проекты автора</span>
+        <span class="en">more from the author</span>
+      </div>
+    </div>
+    <div class="teaser-grid">
+      <a href="https://urbantransmission.org/" target="_blank" rel="noopener noreferrer" class="tlink">
+        <span class="tlink-title ru">Сайт автора</span>
+        <span class="tlink-title en">Author's website</span>
+        <span class="tlink-sub ru">История, исследования, публикации</span>
+        <span class="tlink-sub en">History, research, publications</span>
+        <span class="tlink-url">urbantransmission.org</span>
+      </a>
+      <a href="https://stepik.org/a/295414/pay?promo=b7202a14ee2530b4" target="_blank" rel="noopener noreferrer" class="tlink">
+        <span class="tlink-title ru">Курс: Основы статистики для историков</span>
+        <span class="tlink-title en">Course: Statistics for Historians</span>
+        <span class="tlink-sub ru">Базовые методы – без формул, с примерами из архивов</span>
+        <span class="tlink-sub en">Core methods – no heavy math, with archive-based examples</span>
+        <span class="tlink-url">urbantransmission.org</span>
+      </a>
+      <a href="https://codebook.urbantransmission.org/" target="_blank" rel="noopener noreferrer" class="tlink">
+        <span class="tlink-title">Codebook &amp; Survey Tidier</span>
+        <span class="tlink-sub ru">Кодбук и очистка данных опроса для SPSS, jamovi – в браузере</span>
+        <span class="tlink-sub en">Codebook and survey data cleaning for SPSS, jamovi – in browser</span>
+        <span class="tlink-url">codebook.urbantransmission.org</span>
+      </a>
+    </div>
+  </div>
+
+</div><!-- /wrap -->
+</main>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     ПОДВАЛ
+     Замените href у ссылок-правовых на реальные страницы, когда они будут готовы.
+     ═══════════════════════════════════════════════════════════════════ -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <p>© 2026 <span class="ru">Анна Агафонова, к.и.н.</span><span class="en">Anna B. Agafonova, PhD</span> · <a href="https://urbantransmission.org" target="_blank" rel="noopener noreferrer">urbantransmission.org</a></p>
+      <p>
+        <span class="ru">Работает в браузере – данные остаются у вас.</span>
+        <span class="en">Runs in your browser – your data stays with you.</span>
+      </p>
+    </div>
+    <div class="footer-right">
+      <a href="personal-data.html">
+        <span class="ru">Политика ПД</span>
+        <span class="en">Personal Data Policy</span>
+      </a>
+      <a href="terms.html">
+        <span class="ru">Условия использования</span>
+        <span class="en">Terms of Use</span>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ════════════════════════════════════════════════════════════════
+   Переключатель языка
+   ════════════════════════════════════════════════════════════════ */
+function setLang(lang) {
+  document.documentElement.lang = lang;
+  document.documentElement.classList.remove('lang-ru', 'lang-en');
+  document.documentElement.classList.add('lang-' + lang);
+  document.querySelectorAll('.lang-switch button').forEach(function(b) {
+    b.classList.toggle('on', b.dataset.lang === lang);
+  });
+  try { localStorage.setItem('turnpdf-lang', lang); } catch(e) {}
+}
+// Подсветить активную кнопку на основе класса html
+(function() {
+  var lang = document.documentElement.lang || 'ru';
+  document.querySelectorAll('.lang-switch button').forEach(function(b) {
+    b.classList.toggle('on', b.dataset.lang === lang);
+  });
+})();
+
+/* ════════════════════════════════════════════════════════════════
+   Работа с файлами
+   ════════════════════════════════════════════════════════════════ */
+var dropZone    = document.getElementById('drop-zone');
+var fileInput   = document.getElementById('file-input');
+var fileInfo    = document.getElementById('file-info');
+var fileNameLbl = document.getElementById('file-name-label');
+var fileSizeLbl = document.getElementById('file-size-label');
+var clearBtn    = document.getElementById('clear-btn');
+var rotSection  = document.getElementById('rot-section');
+var actionArea  = document.getElementById('action-area');
+var rotateBtn   = document.getElementById('rotate-btn');
+var statusBox   = document.getElementById('status-box');
+var anotherBtn  = document.getElementById('another-btn');
+var selectedFile = null;
+
+function fmt(bytes) {
+  if (bytes < 1024 * 1024) return Math.round(bytes / 1024) + ' KB';
+  return (bytes / 1024 / 1024).toFixed(1) + ' MB';
+}
+
+function isRu() {
+  return document.documentElement.lang !== 'en';
+}
+
+function setFile(file) {
+  if (!file) return;
+  if (file.type && file.type !== 'application/pdf') {
+    showStatus('error', isRu()
+      ? 'Пожалуйста, выберите файл в формате PDF.'
+      : 'Please select a PDF file.');
+    return;
+  }
+  selectedFile = file;
+  fileNameLbl.textContent = file.name;
+  fileSizeLbl.textContent = fmt(file.size);
+  fileInfo.classList.remove('hidden');
+  rotSection.classList.remove('hidden');
+  actionArea.classList.remove('hidden');
+  statusBox.innerHTML = '';
+}
+
+function clearFile() {
+  selectedFile = null;
+  fileInput.value = '';
+  fileInfo.classList.add('hidden');
+  rotSection.classList.add('hidden');
+  actionArea.classList.add('hidden');
+  statusBox.innerHTML = '';
+  anotherBtn.classList.add('hidden');
+}
+
+anotherBtn.addEventListener('click', function() {
+  clearFile();
+  dropZone.scrollIntoView({ behavior: 'smooth', block: 'center' });
+});
+
+dropZone.addEventListener('click', function() { fileInput.click(); });
+dropZone.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); }
+});
+fileInput.addEventListener('change', function(e) {
+  if (e.target.files && e.target.files[0]) setFile(e.target.files[0]);
+});
+clearBtn.addEventListener('click', clearFile);
+
+// Drag & drop
+dropZone.addEventListener('dragover', function(e) {
+  e.preventDefault(); dropZone.classList.add('drag-over');
+});
+dropZone.addEventListener('dragleave', function(e) {
+  if (!dropZone.contains(e.relatedTarget)) dropZone.classList.remove('drag-over');
+});
+dropZone.addEventListener('drop', function(e) {
+  e.preventDefault(); dropZone.classList.remove('drag-over');
+  var f = e.dataTransfer && e.dataTransfer.files[0];
+  if (f) setFile(f);
+});
+
+/* ── Переключение карточек направления (все страницы) ── */
+document.querySelectorAll('.mode').forEach(function(label) {
+  label.addEventListener('click', function() {
+    document.querySelectorAll('.mode').forEach(function(l) { l.classList.remove('active'); });
+    label.classList.add('active');
+  });
+});
+
+/* ── Переключатель «все / выбранные» ── */
+document.querySelectorAll('.scope-opt').forEach(function(label) {
+  label.addEventListener('click', function() {
+    document.querySelectorAll('.scope-opt').forEach(function(l) { l.classList.remove('active'); });
+    label.classList.add('active');
+    var custom = label.querySelector('input').value === 'custom';
+    document.getElementById('all-pages-rot').classList.toggle('hidden', custom);
+    document.getElementById('custom-pages-rot').classList.toggle('hidden', !custom);
+  });
+});
+
+/* ════════════════════════════════════════════════════════════════
+   Статус
+   ════════════════════════════════════════════════════════════════ */
+function showStatus(type, html) {
+  statusBox.innerHTML = '<div class="status ' + type + '">' + html + '</div>';
+}
+
+/* ════════════════════════════════════════════════════════════════
+   Парсинг диапазонов страниц
+   ════════════════════════════════════════════════════════════════ */
+function parsePageRanges(str, total) {
+  var pages = [];
+  if (!str || !str.trim()) return pages;
+  var parts = str.replace(/[;|]/g, ',').split(',');
+  for (var i = 0; i < parts.length; i++) {
+    var part = parts[i].trim();
+    if (!part) continue;
+    var m = part.match(/^(\d+)\s*[-––]\s*(\d+)$/);
+    if (m) {
+      var a = Math.max(1, parseInt(m[1]));
+      var b = Math.min(total, parseInt(m[2]));
+      for (var p = a; p <= b; p++) {
+        if (pages.indexOf(p) < 0) pages.push(p);
+      }
+    } else if (/^\d+$/.test(part)) {
+      var pg = parseInt(part);
+      if (pg >= 1 && pg <= total && pages.indexOf(pg) < 0) pages.push(pg);
+    }
+  }
+  return pages.sort(function(a, b) { return a - b; });
+}
+
+/* ════════════════════════════════════════════════════════════════
+   PDF-обработка (pdf-lib)
+   ════════════════════════════════════════════════════════════════ */
+rotateBtn.addEventListener('click', function() {
+  if (!selectedFile) return;
+  var ru = isRu();
+
+  rotateBtn.disabled = true;
+  showStatus('working', ru ? '⏳ Обрабатываем PDF…' : '⏳ Processing PDF…');
+
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var arrayBuffer = e.target.result;
+
+    Promise.resolve()
+      .then(function() {
+        if (typeof PDFLib === 'undefined') {
+          throw new Error(ru
+            ? 'Библиотека pdf-lib не загружена. Проверьте подключение к интернету.'
+            : 'pdf-lib library failed to load. Check your internet connection.');
+        }
+        return PDFLib.PDFDocument.load(arrayBuffer, { ignoreEncryption: true });
+      })
+      .then(function(pdfDoc) {
+        var pdfPages = pdfDoc.getPages();
+        var total = pdfPages.length;
+        var rotatedCount = 0;
+        var isCustom = document.querySelector('input[name="scope"]:checked').value === 'custom';
+
+        if (!isCustom) {
+          /* ── Все страницы – одно направление ── */
+          var angle = parseInt(document.querySelector('input[name="rot"]:checked').value, 10);
+          pdfPages.forEach(function(page) {
+            var cur = page.getRotation().angle;
+            page.setRotation(PDFLib.degrees(((cur + angle) % 360 + 360) % 360));
+          });
+          rotatedCount = total;
+
+        } else {
+          /* ── Выбранные страницы – разные направления ── */
+          var groups = [
+            { angle: 90,  pages: parsePageRanges(document.getElementById('range-90').value,  total) },
+            { angle: 270, pages: parsePageRanges(document.getElementById('range-270').value, total) },
+            { angle: 180, pages: parsePageRanges(document.getElementById('range-180').value, total) }
+          ];
+          var totalSpec = groups[0].pages.length + groups[1].pages.length + groups[2].pages.length;
+          if (totalSpec === 0) {
+            throw new Error(ru
+              ? 'Укажите хотя бы одну страницу в полях диапазона.'
+              : 'Enter at least one page number in the range fields.');
+          }
+          // Проверка пересечений
+          var seen = {}, overlap = false;
+          groups.forEach(function(g) {
+            g.pages.forEach(function(p) { if (seen[p]) overlap = true; seen[p] = true; });
+          });
+          if (overlap) {
+            throw new Error(ru
+              ? 'Одна из страниц указана в нескольких полях – каждая страница должна встречаться только один раз.'
+              : 'A page appears in more than one field – each page can only be in one group.');
+          }
+          groups.forEach(function(g) {
+            g.pages.forEach(function(pageNum) {
+              var page = pdfPages[pageNum - 1]; // pdf-lib: 0-based index
+              if (page) {
+                var cur = page.getRotation().angle;
+                page.setRotation(PDFLib.degrees(((cur + g.angle) % 360 + 360) % 360));
+                rotatedCount++;
+              }
+            });
+          });
+        }
+
+        return pdfDoc.save().then(function(bytes) {
+          return { bytes: bytes, total: total, rotatedCount: rotatedCount };
+        });
+      })
+      .then(function(result) {
+        var outName = selectedFile.name.replace(/\.pdf$/i, '_rotated.pdf');
+        var blob = new Blob([result.bytes], { type: 'application/pdf' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url; a.download = outName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function() { URL.revokeObjectURL(url); }, 8000);
+
+        var msg = ru
+          ? '✅ Готово! Файл <strong>' + outName + '</strong> скачан. Повёрнуто: ' + result.rotatedCount + ' из ' + result.total + ' стр.'
+          : '✅ Done! File <strong>' + outName + '</strong> downloaded. Rotated: ' + result.rotatedCount + ' of ' + result.total + ' pages.';
+        showStatus('done', msg);
+        anotherBtn.classList.remove('hidden');
+        rotateBtn.disabled = false;
+      })
+      .catch(function(err) {
+        showStatus('error', (ru ? '❌ Ошибка: ' : '❌ Error: ') + err.message);
+        rotateBtn.disabled = false;
+      });
+  };
+  reader.onerror = function() {
+    showStatus('error', ru
+      ? '❌ Не удалось прочитать файл.'
+      : '❌ Failed to read the file.');
+    rotateBtn.disabled = false;
+  };
+  reader.readAsArrayBuffer(selectedFile);
+});
+</script>
+
+</body>
+</html>
