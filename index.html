@@ -561,6 +561,16 @@ details.faq-item .faq-ans code{
 .seo-block p{font-size:15.5px;color:var(--muted);line-height:1.6;margin:0}
 .seo-block code{font-family:var(--mono);background:rgba(0,0,0,.07);padding:1px 5px;border-radius:4px}
 
+/* ── Кнопка «Наверх» ─────────────────────────────────────────────────── */
+#back-to-top{position:fixed;right:20px;bottom:24px;z-index:200;width:44px;height:44px;
+  border-radius:50%;background:rgba(43,38,32,.85);backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,.15);color:#f7f2e7;font-size:18px;line-height:1;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .18s;
+  box-shadow:0 2px 12px rgba(20,15,5,.3)}
+#back-to-top.visible{opacity:1;pointer-events:auto}
+#back-to-top:hover{transform:translateY(-2px)}
+
 /* ── Подвал ───────────────────────────────────────────────────────────── */
 .site-footer{
   background:var(--hero-bg);
@@ -970,6 +980,8 @@ details.faq-item .faq-ans code{
      ПОДВАЛ
      Замените href у ссылок-правовых на реальные страницы, когда они будут готовы.
      ═══════════════════════════════════════════════════════════════════ -->
+<button id="back-to-top" aria-label="Наверх">↑</button>
+
 <footer class="site-footer">
   <div class="footer-inner">
     <div class="footer-left">
@@ -1011,6 +1023,13 @@ function setLang(lang) {
   document.querySelectorAll('.lang-switch button').forEach(function(b) {
     b.classList.toggle('on', b.dataset.lang === lang);
   });
+})();
+
+/* ── Кнопка «Наверх» ── */
+(function(){
+  var btt = document.getElementById('back-to-top');
+  window.addEventListener('scroll', function(){ btt.classList.toggle('visible', window.scrollY > 320); });
+  btt.addEventListener('click', function(){ window.scrollTo({top:0, behavior:'smooth'}); });
 })();
 
 /* ════════════════════════════════════════════════════════════════
